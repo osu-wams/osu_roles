@@ -19,6 +19,7 @@ function osu_roles_form_user_form_alter(&$form, FormStateInterface $form_state, 
   $user_roles = \Drupal::currentUser()->getRoles();
   $admin_role = _build_admin_role_array();
   if ($user->id() !== '1' && !in_array($admin_role, $user_roles)) {
+    $form['account']['roles']['dx_administrator']['#disabled'] = TRUE;
     $form['account']['roles']['administrator']['#disabled'] = TRUE;
   }
 }
@@ -70,15 +71,19 @@ function osu_roles_form_views_form_user_admin_people_page_1_alter(&$form, FormSt
 /**
  * Get the configured administrative role.
  *
- * @return string
+ * @return array
  *   The configured administrative role.
  */
 function _build_admin_role_array() {
   $roles = Role::loadMultiple();
+  $admin_roles = [];
   foreach ($roles as $role_name => $value) {
     if ($value->isAdmin()) {
-      $admin_role = $role_name;
+      $admin_roles[] = $role_name;
+    }
+    if ($role_name === 'dx_administrator') {
+      $admin_roles[] = $role_name;
     }
   }
-  return $admin_role;
+  return $admin_roles;
 }
