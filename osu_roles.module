@@ -52,6 +52,7 @@ function osu_roles_form_bulk_add_cas_users_alter(&$form, FormStateInterface $for
   $admin_role = _build_admin_role_array();
   if ($user->id() !== '1' && !in_array($admin_role, $user_roles)) {
     $form['roles']['administrator']['#disabled'] = TRUE;
+    $form['roles']['dx_administrator']['#disabled'] = TRUE;
   }
 }
 
@@ -65,6 +66,7 @@ function osu_roles_form_views_form_user_admin_people_page_1_alter(&$form, FormSt
   $admin_role = _build_admin_role_array();
   if ($user->id() !== '1' && !in_array($admin_role, $user_roles)) {
     unset($form['header']['user_bulk_form']['action']['#options']['user_add_role_action.administrator']);
+    unset($form['header']['user_bulk_form']['action']['#options']['user_add_role_action.dx_administrator']);
   }
 }
 
