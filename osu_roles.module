@@ -32,7 +32,7 @@ function osu_roles_form_user_admin_permissions_alter(&$form, FormStateInterface 
   $user = User::load(\Drupal::currentUser()->id());
   $user_roles = \Drupal::currentUser()->getRoles();
   $admin_role = _build_admin_role_array();
-  if ($user->id() !== '1' && !in_array($admin_role, $user_roles)) {
+  if ($user->id() !== '1' && count(array_intersect($admin_role, $user_roles)) === 0 && array_key_exists('administer modules', $form['permissions'])) {
     foreach ($form['permissions']['administer modules'] as $role => $settings) {
       if ($role !== 'description') {
         $form['permissions']['administer modules'][$role]['#disabled'] = TRUE;
